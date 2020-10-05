@@ -27,7 +27,6 @@ public class StudentEntity {
                          int genderId,
                          int classId,
                          ArrayList<TranscriptModel> transcriptList) {
-        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.genderId = genderId;

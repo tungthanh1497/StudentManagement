@@ -1,12 +1,13 @@
 package com.ttc.tungtt.sm.ui.updatestudent;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -20,8 +21,6 @@ import com.ttc.tungtt.sm.commons.Constants;
 import com.ttc.tungtt.sm.commons.adapters.SimpleSpinnerAdapter;
 import com.ttc.tungtt.sm.databases.entities.StudentEntity;
 import com.ttc.tungtt.sm.models.SimpleModel;
-import com.ttc.tungtt.sm.models.SubjectModel;
-import com.ttc.tungtt.sm.models.TranscriptModel;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -30,6 +29,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class UpdateStudentFragment extends Fragment {
 
@@ -42,10 +42,16 @@ public class UpdateStudentFragment extends Fragment {
     }
 
 
+    @BindView(R.id.et_first_name)
+    EditText firstNameEditText;
+    @BindView(R.id.et_last_name)
+    EditText lastNameEditText;
     @BindView(R.id.spn_gender)
     Spinner genderSpinner;
     @BindView(R.id.spn_class)
     Spinner classSpinner;
+    @BindView(R.id.btn_submit)
+    Button submitButton;
 
 
     private UpdateStudentViewModel mViewModel;
@@ -82,18 +88,6 @@ public class UpdateStudentFragment extends Fragment {
         initData();
 
         mViewModel.getAllStudent();
-
-        ArrayList<TranscriptModel> transcriptModels = new ArrayList<>();
-        transcriptModels.add(new TranscriptModel(new SubjectModel(1, "math"), 6));
-        transcriptModels.add(new TranscriptModel(new SubjectModel(2, "physics"), 9));
-        transcriptModels.add(new TranscriptModel(new SubjectModel(3, "chem"), 7));
-        mViewModel.addStudent(new StudentEntity("tung",
-                "trinh thanh",
-                1,
-                1,
-                transcriptModels));
-
-        new Handler().postDelayed(() -> mViewModel.getAllStudent(), 2000);
 
     }
 
@@ -166,6 +160,19 @@ public class UpdateStudentFragment extends Fragment {
     private void observeLiveData() {
         mViewModel.getStudentLiveData().observe(getViewLifecycleOwner(),
                 studentList -> Log.d(TAG, "onChanged: studentList = " + studentList));
+    }
+
+    @OnClick(R.id.btn_submit)
+    public void onSubmitClicked() {
+        StudentEntity studentModel = new StudentEntity(
+                firstNameEditText.getText().toString().trim(),
+                lastNameEditText.getText().toString().trim(),
+                mGenderList.get(mSelectedGenderIndex).getId(),
+                mClassList.get(mSelectedClassIndex).getId(),
+                null
+        );
+        mViewModel.addStudent(studentModel);
+        mViewModel.getAllStudent();
     }
 
 }
