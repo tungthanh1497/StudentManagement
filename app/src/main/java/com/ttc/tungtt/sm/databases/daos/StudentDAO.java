@@ -1,7 +1,7 @@
 package com.ttc.tungtt.sm.databases.daos;
 
-import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
+import androidx.room.Insert;
 import androidx.room.Query;
 
 import com.ttc.tungtt.sm.databases.entities.StudentEntity;
@@ -15,5 +15,8 @@ import java.util.List;
 @Dao
 public interface StudentDAO {
     @Query("select * from StudentTable")
-    LiveData<List<StudentEntity>> getAll();
+    List<StudentEntity> getAll();
+
+    @Insert
+    long add(StudentEntity student);
 }

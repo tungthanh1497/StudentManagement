@@ -8,6 +8,11 @@ public class TranscriptModel {
     private SubjectModel subject;
     private double result;
 
+    public TranscriptModel(SubjectModel subject, double result) {
+        this.subject = subject;
+        this.result = result;
+    }
+
     public SubjectModel getSubject() {
         return subject;
     }

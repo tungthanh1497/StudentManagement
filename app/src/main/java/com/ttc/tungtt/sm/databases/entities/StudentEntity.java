@@ -23,6 +23,18 @@ public class StudentEntity {
     private int classId;
     private ArrayList<TranscriptModel> transcriptList;
 
+    public StudentEntity(String firstName,
+                         String lastName,
+                         String gender,
+                         int classId,
+                         ArrayList<TranscriptModel> transcriptList) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.classId = classId;
+        this.transcriptList = transcriptList;
+    }
 
     public int getId() {
         return id;
