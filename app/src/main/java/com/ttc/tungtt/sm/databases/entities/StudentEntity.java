@@ -1,6 +1,7 @@
 package com.ttc.tungtt.sm.databases.entities;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.ttc.tungtt.sm.models.TranscriptModel;
@@ -21,6 +22,13 @@ public class StudentEntity {
     private int genderId;
     private int classId;
     private ArrayList<TranscriptModel> transcriptList;
+
+    @Ignore
+    private String fullName;
+    @Ignore
+    private String genderName;
+    @Ignore
+    private String className;
 
     public StudentEntity(String firstName,
                          String lastName,
@@ -80,6 +88,30 @@ public class StudentEntity {
 
     public void setTranscriptList(ArrayList<TranscriptModel> transcriptList) {
         this.transcriptList = transcriptList;
+    }
+
+    public String getFullName() {
+        return fullName == null ? "" : fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getGenderName() {
+        return genderName == null ? "" : genderName;
+    }
+
+    public void setGenderName(String genderName) {
+        this.genderName = genderName;
+    }
+
+    public String getClassName() {
+        return className == null ? "" : className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
     }
 
     @Override
