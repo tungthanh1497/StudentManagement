@@ -11,16 +11,18 @@ import com.ttc.tungtt.sm.commons.Constants;
 import com.ttc.tungtt.sm.databases.daos.ClassDAO;
 import com.ttc.tungtt.sm.databases.daos.GenderDAO;
 import com.ttc.tungtt.sm.databases.daos.StudentDAO;
+import com.ttc.tungtt.sm.databases.daos.SubjectDAO;
 import com.ttc.tungtt.sm.databases.entities.ClassEntity;
 import com.ttc.tungtt.sm.databases.entities.GenderEntity;
 import com.ttc.tungtt.sm.databases.entities.StudentEntity;
+import com.ttc.tungtt.sm.databases.entities.SubjectEntity;
 
 /**
  * Created by ttcandroid a.k.a TungTT
  * On Mon, 05 Oct 2020 - 10:06
  */
 @Database(version = 1,
-        entities = {StudentEntity.class, ClassEntity.class, GenderEntity.class})
+        entities = {StudentEntity.class, ClassEntity.class, GenderEntity.class, SubjectEntity.class})
 @TypeConverters({GsonUtils.class})
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase INSTANCE;
@@ -30,6 +32,8 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract ClassDAO classDAO();
 
     public abstract GenderDAO genderDAO();
+
+    public abstract SubjectDAO subjectDAO();
 
     public static AppDatabase getInstance(Context context) {
         if (INSTANCE == null) {
