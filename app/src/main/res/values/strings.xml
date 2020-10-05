@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">StudentManagement</string>
+    <string name="hint_result_edit_text">ex: 6.9</string>
+    <string name="label_first_name">First Name *</string>
+    <string name="hint_first_name">ex: Tung</string>
+    <string name="label_last_name">Last Name *</string>
+    <string name="hint_last_name">ex: Trinh Thanh</string>
+    <string name="label_gender">Gender *</string>
+    <string name="label_class">Class *</string>
+    <string name="btn_submit">Submit</string>
 </resources>
