@@ -8,4 +8,5 @@ public class Constants {
     public static final String DATABASE_NAME = "student_management_database";
 
     public static final int SIZE_EMPTY = 0;
+    public static final int POSITION_NOT_EXISTED = -1;
 }

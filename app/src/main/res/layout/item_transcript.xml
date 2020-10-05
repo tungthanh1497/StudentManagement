@@ -21,7 +21,6 @@
         android:layout_weight="1"
         android:hint="@string/hint_result_edit_text"
         android:importantForAutofill="no"
-        android:inputType="number"
         android:visibility="gone" />
 
     <TextView
