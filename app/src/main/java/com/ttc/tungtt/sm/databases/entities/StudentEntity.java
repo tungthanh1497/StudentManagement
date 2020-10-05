@@ -3,7 +3,6 @@ package com.ttc.tungtt.sm.databases.entities;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import com.ttc.tungtt.sm.commons.Constants;
 import com.ttc.tungtt.sm.models.TranscriptModel;
 
 import java.util.ArrayList;
@@ -19,19 +18,19 @@ public class StudentEntity {
 
     private String firstName;
     private String lastName;
-    private String gender;
+    private int genderId;
     private int classId;
     private ArrayList<TranscriptModel> transcriptList;
 
     public StudentEntity(String firstName,
                          String lastName,
-                         String gender,
+                         int genderId,
                          int classId,
                          ArrayList<TranscriptModel> transcriptList) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.gender = gender;
+        this.genderId = genderId;
         this.classId = classId;
         this.transcriptList = transcriptList;
     }
@@ -60,12 +59,12 @@ public class StudentEntity {
         this.lastName = lastName;
     }
 
-    public String getGender() {
-        return gender == null ? Constants.GENDER.UNKNOWN : gender;
+    public int getGenderId() {
+        return genderId;
     }
 
-    public void setGender(String gender) {
-        this.gender = gender;
+    public void setGenderId(int genderId) {
+        this.genderId = genderId;
     }
 
     public int getClassId() {
@@ -90,7 +89,7 @@ public class StudentEntity {
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", gender='" + gender + '\'' +
+                ", gender='" + genderId + '\'' +
                 ", classId=" + classId +
                 ", transcriptList=" + transcriptList +
                 '}';
