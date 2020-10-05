@@ -15,12 +15,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.ttc.tungtt.sm.R;
 import com.ttc.tungtt.sm.commons.Constants;
 import com.ttc.tungtt.sm.commons.adapters.SimpleSpinnerAdapter;
+import com.ttc.tungtt.sm.commons.adapters.TranscriptAdapter;
 import com.ttc.tungtt.sm.databases.entities.StudentEntity;
+import com.ttc.tungtt.sm.databases.entities.SubjectEntity;
 import com.ttc.tungtt.sm.models.SimpleModel;
+import com.ttc.tungtt.sm.models.TranscriptModel;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -50,6 +56,8 @@ public class UpdateStudentFragment extends Fragment {
     Spinner genderSpinner;
     @BindView(R.id.spn_class)
     Spinner classSpinner;
+    @BindView(R.id.rv_transcript)
+    RecyclerView transcriptRecyclerView;
     @BindView(R.id.btn_submit)
     Button submitButton;
 
@@ -58,12 +66,17 @@ public class UpdateStudentFragment extends Fragment {
 
     private List<SimpleModel> mGenderList;
     private List<SimpleModel> mClassList;
+    private List<SubjectEntity> mSubjectList;
+    private ArrayList<TranscriptModel> mTranscriptList;
 
     private SimpleSpinnerAdapter mGenderAdapter;
     private SimpleSpinnerAdapter mClassAdapter;
+    private TranscriptAdapter mTranscriptAdapter;
 
     private int mSelectedGenderIndex = -1;
     private int mSelectedClassIndex = -1;
+
+    private boolean getAllSubjectsDone = false;
 
 
     public static UpdateStudentFragment newInstance() {
@@ -85,15 +98,29 @@ public class UpdateStudentFragment extends Fragment {
 
         observeLiveData();
         initSpinners();
+        initRecyclerViews();
         initData();
 
         mViewModel.getAllStudent();
 
     }
 
+    private void initRecyclerViews() {
+        mSubjectList = new ArrayList<>();
+        mTranscriptList = new ArrayList<>();
+        mTranscriptAdapter = new TranscriptAdapter(getContext(),
+                mTranscriptList,
+                TranscriptAdapter.RESULT_VIEW_TYPE.EDIT_TEXT,
+                (position, result) -> mTranscriptList.get(position).setResult(result));
+        transcriptRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        transcriptRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        transcriptRecyclerView.setAdapter(mTranscriptAdapter);
+    }
+
     private void initData() {
         initGenderList();
         initClassList();
+        initSubjectList();
     }
 
     private void initClassList() {
@@ -115,6 +142,17 @@ public class UpdateStudentFragment extends Fragment {
                 genderSpinner.setSelection(0);
                 mSelectedGenderIndex = 0;
             }
+        });
+    }
+
+    private void initSubjectList() {
+        mViewModel.getAllSubject().observe(getViewLifecycleOwner(), subjectList -> {
+            mSubjectList.addAll(subjectList);
+            mTranscriptList.clear();
+            for (SubjectEntity item : mSubjectList) {
+                mTranscriptList.add(new TranscriptModel(item));
+            }
+            mTranscriptAdapter.notifyDataSetChanged();
         });
     }
 
@@ -169,7 +207,7 @@ public class UpdateStudentFragment extends Fragment {
                 lastNameEditText.getText().toString().trim(),
                 mGenderList.get(mSelectedGenderIndex).getId(),
                 mClassList.get(mSelectedClassIndex).getId(),
-                null
+                mTranscriptList
         );
         mViewModel.addStudent(studentModel);
         mViewModel.getAllStudent();
