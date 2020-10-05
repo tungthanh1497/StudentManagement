@@ -4,7 +4,7 @@ import androidx.room.TypeConverter;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.ttc.tungtt.sm.databases.models.TranscriptModel;
+import com.ttc.tungtt.sm.models.TranscriptModel;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;

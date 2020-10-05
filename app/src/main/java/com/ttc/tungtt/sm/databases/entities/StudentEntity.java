@@ -4,7 +4,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import com.ttc.tungtt.sm.commons.Constants;
-import com.ttc.tungtt.sm.databases.models.TranscriptModel;
+import com.ttc.tungtt.sm.models.TranscriptModel;
 
 import java.util.ArrayList;
 

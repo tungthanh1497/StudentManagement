@@ -15,8 +15,8 @@ import androidx.lifecycle.ViewModelProviders;
 import com.ttc.tungtt.sm.R;
 import com.ttc.tungtt.sm.commons.Constants;
 import com.ttc.tungtt.sm.databases.entities.StudentEntity;
-import com.ttc.tungtt.sm.databases.models.SubjectModel;
-import com.ttc.tungtt.sm.databases.models.TranscriptModel;
+import com.ttc.tungtt.sm.models.SubjectModel;
+import com.ttc.tungtt.sm.models.TranscriptModel;
 
 import java.util.ArrayList;
 

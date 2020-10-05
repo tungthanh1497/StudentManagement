@@ -1,4 +1,4 @@
-package com.ttc.tungtt.sm.databases.models;
+package com.ttc.tungtt.sm.models;
 
 /**
  * Created by ttcandroid a.k.a TungTT
