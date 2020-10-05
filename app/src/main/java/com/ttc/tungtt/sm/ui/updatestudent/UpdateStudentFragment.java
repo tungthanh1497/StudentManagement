@@ -76,8 +76,6 @@ public class UpdateStudentFragment extends Fragment {
     private int mSelectedGenderIndex = -1;
     private int mSelectedClassIndex = -1;
 
-    private boolean getAllSubjectsDone = false;
-
 
     public static UpdateStudentFragment newInstance() {
         return new UpdateStudentFragment();
@@ -96,12 +94,9 @@ public class UpdateStudentFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(UpdateStudentViewModel.class);
 
-        observeLiveData();
         initSpinners();
         initRecyclerViews();
         initData();
-
-        mViewModel.getAllStudent();
 
     }
 
@@ -195,11 +190,6 @@ public class UpdateStudentFragment extends Fragment {
         });
     }
 
-    private void observeLiveData() {
-        mViewModel.getStudentLiveData().observe(getViewLifecycleOwner(),
-                studentList -> Log.d(TAG, "onChanged: studentList = " + studentList));
-    }
-
     @OnClick(R.id.btn_submit)
     public void onSubmitClicked() {
         StudentEntity studentModel = new StudentEntity(
@@ -210,7 +200,6 @@ public class UpdateStudentFragment extends Fragment {
                 mTranscriptList
         );
         mViewModel.addStudent(studentModel);
-        mViewModel.getAllStudent();
     }
 
 }
