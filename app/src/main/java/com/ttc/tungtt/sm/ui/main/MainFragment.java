@@ -85,14 +85,17 @@ public class MainFragment extends Fragment {
 
     private void observeLiveData() {
         mViewModel.getAllGenders().observe(getViewLifecycleOwner(), genderList -> {
+            mGenderList.clear();
             mGenderList.addAll(genderList);
             updateGenderNames();
         });
         mViewModel.getAllClasses().observe(getViewLifecycleOwner(), classList -> {
+            mClassList.clear();
             mClassList.addAll(classList);
             updateClassNames();
         });
         mViewModel.getAllStudents().observe(getViewLifecycleOwner(), studentList -> {
+            mStudentList.clear();
             mStudentList.addAll(studentList);
             for (StudentEntity item : mStudentList) {
                 item.setFullName(item.getFirstName() + " " + item.getLastName());
