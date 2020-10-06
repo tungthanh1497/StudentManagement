@@ -6,6 +6,8 @@ import androidx.room.PrimaryKey;
 
 import com.ttc.tungtt.sm.models.TranscriptModel;
 
+import org.apache.commons.text.WordUtils;
+
 import java.util.ArrayList;
 
 /**
@@ -35,8 +37,8 @@ public class StudentEntity {
                          int genderId,
                          int classId,
                          ArrayList<TranscriptModel> transcriptList) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.firstName = WordUtils.capitalize(firstName.toLowerCase());
+        this.lastName = WordUtils.capitalize(lastName.toLowerCase());
         this.genderId = genderId;
         this.classId = classId;
         this.transcriptList = transcriptList;
