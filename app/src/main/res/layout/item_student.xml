@@ -3,8 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    android:orientation="vertical">
+    android:layout_margin="4dp"
+    android:background="#f0f8ff"
+    android:orientation="vertical"
+    android:padding="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,21 +18,27 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:background="#00ff00" />
+            android:textColor="#0e2f44"
+            android:textStyle="bold"
+            tools:text="Tung Trinh Thanh" />
 
         <TextView
             android:id="@+id/tv_gender"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="#ffff00" />
+            android:textColor="#0e2f44"
+            android:textStyle="bold"
+            tools:text="Male" />
 
         <TextView
             android:id="@+id/tv_class"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="#00ffff" />
+            android:textColor="#0e2f44"
+            android:textStyle="bold"
+            tools:text="11a12" />
 
 
     </LinearLayout>
