@@ -13,17 +13,21 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ttc.tungtt.sm.MainActivity;
 import com.ttc.tungtt.sm.R;
+import com.ttc.tungtt.sm.commons.Constants;
 import com.ttc.tungtt.sm.commons.adapters.StudentAdapter;
 import com.ttc.tungtt.sm.databases.entities.ClassEntity;
 import com.ttc.tungtt.sm.databases.entities.GenderEntity;
 import com.ttc.tungtt.sm.databases.entities.StudentEntity;
+import com.ttc.tungtt.sm.ui.updatestudent.UpdateStudentFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class MainFragment extends Fragment {
 
@@ -111,4 +115,10 @@ public class MainFragment extends Fragment {
         mStudentAdapter.notifyDataSetChanged();
     }
 
+    @OnClick(R.id.btn_add)
+    public void onAddClicked() {
+        if (getActivity() != null && getActivity() instanceof MainActivity) {
+            ((MainActivity) getActivity()).addScreen(UpdateStudentFragment.newInstance(), Constants.SCREEN_TAG.UPDATE_STUDENT);
+        }
+    }
 }

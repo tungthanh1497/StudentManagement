@@ -11,14 +11,14 @@
         android:id="@+id/tv_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_weight="2"
         tools:text="Math" />
 
     <EditText
         android:id="@+id/et_result"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:hint="@string/hint_result_edit_text"
         android:importantForAutofill="no"
         android:visibility="gone" />

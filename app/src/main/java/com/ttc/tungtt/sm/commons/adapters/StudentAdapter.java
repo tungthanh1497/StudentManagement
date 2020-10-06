@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,10 +28,14 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.ViewHold
 
     private Context mContext;
     private List<StudentEntity> mList;
+    private OnStudentListener mListener;
 
-    public StudentAdapter(Context context, List<StudentEntity> list) {
+    public StudentAdapter(Context context,
+                          List<StudentEntity> list,
+                          OnStudentListener listener) {
         this.mContext = context;
         this.mList = list;
+        this.mListener = listener;
     }
 
     @NonNull
@@ -53,6 +58,12 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.ViewHold
                 model.getTranscriptList(),
                 TranscriptAdapter.RESULT_VIEW_TYPE.TEXT_VIEW,
                 null));
+
+        holder.addButton.setOnClickListener(view -> {
+            if (mListener != null) {
+                mListener.onUpdateStudent(position);
+            }
+        });
     }
 
     @Override
@@ -70,10 +81,16 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.ViewHold
         TextView classTextView;
         @BindView(R.id.rv_transcript)
         RecyclerView transcriptRecyclerView;
+        @BindView(R.id.btn_add)
+        Button addButton;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
+    }
+
+    public interface OnStudentListener {
+        void onUpdateStudent(int position);
     }
 }
