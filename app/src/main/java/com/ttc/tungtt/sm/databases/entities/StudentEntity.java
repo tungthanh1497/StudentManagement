@@ -1,12 +1,11 @@
 package com.ttc.tungtt.sm.databases.entities;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.ttc.tungtt.sm.models.TranscriptModel;
-
-import org.apache.commons.text.WordUtils;
 
 import java.util.ArrayList;
 
@@ -16,8 +15,9 @@ import java.util.ArrayList;
  */
 @Entity(tableName = "StudentTable")
 public class StudentEntity {
-    @PrimaryKey(autoGenerate = true)
-    private int id;
+    @NonNull
+    @PrimaryKey
+    private String id;
 
     private String firstName;
     private String lastName;
@@ -32,23 +32,25 @@ public class StudentEntity {
     @Ignore
     private String className;
 
-    public StudentEntity(String firstName,
+    public StudentEntity(String id,
+                         String firstName,
                          String lastName,
                          int genderId,
                          int classId,
                          ArrayList<TranscriptModel> transcriptList) {
-        this.firstName = WordUtils.capitalize(firstName.toLowerCase());
-        this.lastName = WordUtils.capitalize(lastName.toLowerCase());
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.genderId = genderId;
         this.classId = classId;
         this.transcriptList = transcriptList;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

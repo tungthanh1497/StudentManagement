@@ -23,8 +23,11 @@ public interface StudentDAO {
     long add(StudentEntity student);
 
     @Query("select * from StudentTable where id = :studentId")
-    LiveData<StudentEntity> getById(int studentId);
+    LiveData<StudentEntity> getById(String studentId);
 
     @Update
     void update(StudentEntity student);
+
+    @Query("select * from StudentTable where id like :tempId || '%'")
+    LiveData<List<StudentEntity>> getLikeId(String tempId);
 }

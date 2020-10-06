@@ -73,7 +73,7 @@ public class MainFragment extends Fragment {
             if (getActivity() != null && getActivity() instanceof MainActivity) {
                 UpdateStudentFragment fragment = UpdateStudentFragment.newInstance();
                 Bundle bundle = new Bundle();
-                bundle.putInt(UpdateStudentFragment.BUNDLE_KEY.STUDENT_ID, mStudentList.get(position).getId());
+                bundle.putString(UpdateStudentFragment.BUNDLE_KEY.STUDENT_ID, mStudentList.get(position).getId());
                 fragment.setArguments(bundle);
                 ((MainActivity) getActivity()).addScreen(fragment, Constants.SCREEN_TAG.UPDATE_STUDENT);
             }

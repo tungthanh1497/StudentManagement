@@ -85,7 +85,37 @@ public class UpdateStudentViewModel extends AndroidViewModel {
         mAppDatabase.subjectDAO().add(subjectModel);
     }
 
-    public LiveData<StudentEntity> getStudentById(int studentId) {
+    public LiveData<StudentEntity> getStudentById(String studentId) {
         return mAppDatabase.studentDAO().getById(studentId);
+    }
+
+    public LiveData<List<StudentEntity>> getListStudentLikeId(String tempId) {
+        return mAppDatabase.studentDAO().getLikeId(tempId);
+    }
+
+    public String formatNameToTempStudentId(String firstName, String lastName) {
+        String[] lastNameArr = lastName.split("\\s+");
+        StringBuilder tempIdBuilder = new StringBuilder(firstName);
+        for (String item : lastNameArr) {
+            tempIdBuilder.append(item.charAt(0));
+        }
+        return tempIdBuilder.toString().toLowerCase();
+    }
+
+    public String getMinimizeAvailableId(String tempId, List<StudentEntity> studentList) {
+        int count = 0;
+        for (StudentEntity item : studentList) {
+            String remainId = item.getId().replace(tempId, "");
+            if (remainId.length() == 0) {
+                count++;
+            } else {
+                try {
+                    Integer.parseInt(remainId);
+                    count++;
+                } catch (Exception e) {
+                }
+            }
+        }
+        return count > 0 ? tempId + count : tempId;
     }
 }

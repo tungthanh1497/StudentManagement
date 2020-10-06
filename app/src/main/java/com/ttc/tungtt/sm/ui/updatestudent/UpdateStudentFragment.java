@@ -24,6 +24,7 @@ import com.ttc.tungtt.sm.R;
 import com.ttc.tungtt.sm.commons.Constants;
 import com.ttc.tungtt.sm.commons.adapters.SimpleSpinnerAdapter;
 import com.ttc.tungtt.sm.commons.adapters.TranscriptAdapter;
+import com.ttc.tungtt.sm.commons.utils.StringUtils;
 import com.ttc.tungtt.sm.databases.entities.StudentEntity;
 import com.ttc.tungtt.sm.databases.entities.SubjectEntity;
 import com.ttc.tungtt.sm.models.SimpleModel;
@@ -71,7 +72,7 @@ public class UpdateStudentFragment extends Fragment {
 
 
     private UpdateStudentViewModel mViewModel;
-    private int mUpdatingStudentId = Constants.DEFAULT_STUDENT_ID;
+    private String mUpdatingStudentId;
     private StudentEntity mStudentModel;
 
     private List<SimpleModel> mGenderList;
@@ -104,7 +105,7 @@ public class UpdateStudentFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
         if (bundle != null) {
-            mUpdatingStudentId = bundle.getInt(BUNDLE_KEY.STUDENT_ID, Constants.DEFAULT_STUDENT_ID);
+            mUpdatingStudentId = bundle.getString(BUNDLE_KEY.STUDENT_ID, "");
         }
     }
 
@@ -116,7 +117,7 @@ public class UpdateStudentFragment extends Fragment {
         initSpinners();
         initRecyclerViews();
         initData();
-        if (Constants.DEFAULT_STUDENT_ID != mUpdatingStudentId) {
+        if (!StringUtils.isNullOrEmpty(mUpdatingStudentId)) {
             mViewModel.getStudentById(mUpdatingStudentId).observe(getViewLifecycleOwner(), studentEntity -> {
                 mStudentModel = studentEntity;
                 setDefaultData();
@@ -269,19 +270,35 @@ public class UpdateStudentFragment extends Fragment {
 
     @OnClick(R.id.btn_submit)
     public void onSubmitClicked() {
-        StudentEntity submitModel = new StudentEntity(
-                firstNameEditText.getText().toString().trim(),
-                lastNameEditText.getText().toString().trim(),
-                mGenderList.get(mSelectedGenderIndex).getId(),
-                mClassList.get(mSelectedClassIndex).getId(),
-                mTranscriptList
-        );
+        String firstName = StringUtils.formatCapitalizeWithoutSpace(firstNameEditText);
+        String lastName = StringUtils.formatCapitalize(lastNameEditText);
         if (mStudentModel == null) {
-            mViewModel.addStudent(submitModel);
+            String tempId = mViewModel.formatNameToTempStudentId(firstName, lastName);
+
+            mViewModel.getListStudentLikeId(tempId).observe(getViewLifecycleOwner(), studentList -> {
+                mViewModel.addStudent(new StudentEntity(
+                        mViewModel.getMinimizeAvailableId(tempId, studentList),
+                        firstName,
+                        lastName,
+                        mGenderList.get(mSelectedGenderIndex).getId(),
+                        mClassList.get(mSelectedClassIndex).getId(),
+                        mTranscriptList
+                ));
+                onBack();
+            });
         } else {
-            mViewModel.updateStudent(submitModel);
+            mViewModel.updateStudent(new StudentEntity(
+                    mStudentModel.getId(),
+                    firstName,
+                    lastName,
+                    mGenderList.get(mSelectedGenderIndex).getId(),
+                    mClassList.get(mSelectedClassIndex).getId(),
+                    mTranscriptList
+            ));
+            onBack();
         }
-        onBack();
+
+
     }
 
     private void onBack() {
