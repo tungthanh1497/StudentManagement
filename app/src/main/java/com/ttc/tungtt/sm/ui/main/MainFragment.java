@@ -68,7 +68,16 @@ public class MainFragment extends Fragment {
         mStudentList = new ArrayList<>();
         mClassList = new ArrayList<>();
         mGenderList = new ArrayList<>();
-        mStudentAdapter = new StudentAdapter(getContext(), mStudentList);
+        mStudentAdapter = new StudentAdapter(getContext(), mStudentList, position -> {
+
+            if (getActivity() != null && getActivity() instanceof MainActivity) {
+                UpdateStudentFragment fragment = UpdateStudentFragment.newInstance();
+                Bundle bundle = new Bundle();
+                bundle.putInt(UpdateStudentFragment.BUNDLE_KEY.STUDENT_ID, mStudentList.get(position).getId());
+                fragment.setArguments(bundle);
+                ((MainActivity) getActivity()).addScreen(fragment, Constants.SCREEN_TAG.UPDATE_STUDENT);
+            }
+        });
         studentRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         studentRecyclerView.setItemAnimator(new DefaultItemAnimator());
         studentRecyclerView.setAdapter(mStudentAdapter);

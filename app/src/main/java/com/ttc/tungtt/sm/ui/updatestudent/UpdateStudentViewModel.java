@@ -28,6 +28,10 @@ public class UpdateStudentViewModel extends AndroidViewModel {
         return mAppDatabase.studentDAO().add(student);
     }
 
+    public void updateStudent(StudentEntity student) {
+        mAppDatabase.studentDAO().update(student);
+    }
+
     public LiveData<List<ClassEntity>> getAllClass() {
         if (Constants.SIZE_EMPTY == mAppDatabase.classDAO().getCount()) {
             initClassList();
@@ -79,5 +83,9 @@ public class UpdateStudentViewModel extends AndroidViewModel {
 
     private void addSubject(SubjectEntity subjectModel) {
         mAppDatabase.subjectDAO().add(subjectModel);
+    }
+
+    public LiveData<StudentEntity> getStudentById(int studentId) {
+        return mAppDatabase.studentDAO().getById(studentId);
     }
 }

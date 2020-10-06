@@ -43,6 +43,13 @@ public class UpdateStudentFragment extends Fragment {
     private static final String TAG = UpdateStudentFragment.class.getSimpleName();
 
     @Retention(RetentionPolicy.SOURCE)
+    public @interface BUNDLE_KEY {
+        String STUDENT_ID = "student_id";
+    }
+
+    private static final String BUNDLE_STUDENT_ID = UpdateStudentFragment.class.getSimpleName();
+
+    @Retention(RetentionPolicy.SOURCE)
     public @interface SPINNER_TYPE {
         String GENDER = "gender";
         String CLASS = "class";
@@ -64,6 +71,8 @@ public class UpdateStudentFragment extends Fragment {
 
 
     private UpdateStudentViewModel mViewModel;
+    private int mUpdatingStudentId = Constants.DEFAULT_STUDENT_ID;
+    private StudentEntity mStudentModel;
 
     private List<SimpleModel> mGenderList;
     private List<SimpleModel> mClassList;
@@ -91,6 +100,15 @@ public class UpdateStudentFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            mUpdatingStudentId = bundle.getInt(BUNDLE_KEY.STUDENT_ID, Constants.DEFAULT_STUDENT_ID);
+        }
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(UpdateStudentViewModel.class);
@@ -98,6 +116,12 @@ public class UpdateStudentFragment extends Fragment {
         initSpinners();
         initRecyclerViews();
         initData();
+        if (Constants.DEFAULT_STUDENT_ID != mUpdatingStudentId) {
+            mViewModel.getStudentById(mUpdatingStudentId).observe(getViewLifecycleOwner(), studentEntity -> {
+                mStudentModel = studentEntity;
+                setDefaultData();
+            });
+        }
 
     }
 
@@ -121,35 +145,87 @@ public class UpdateStudentFragment extends Fragment {
 
     private void initClassList() {
         mViewModel.getAllClass().observe(getViewLifecycleOwner(), classList -> {
+            mClassList.clear();
             mClassList.addAll(classList);
             mClassAdapter.notifyDataSetChanged();
             if (mClassList.size() > Constants.SIZE_EMPTY) {
-                classSpinner.setSelection(0);
-                mSelectedClassIndex = 0;
+                setDefaultClass();
             }
         });
     }
 
     private void initGenderList() {
         mViewModel.getAllGender().observe(getViewLifecycleOwner(), genderList -> {
+            mGenderList.clear();
             mGenderList.addAll(genderList);
             mGenderAdapter.notifyDataSetChanged();
             if (mGenderList.size() > Constants.SIZE_EMPTY) {
-                genderSpinner.setSelection(0);
-                mSelectedGenderIndex = 0;
+                setDefaultGender();
             }
         });
     }
 
+    private void setDefaultClass() {
+        int selectedIndex = 0;
+        if (mStudentModel != null) {
+            for (int index = 0; index < mClassList.size(); index++) {
+                SimpleModel classItem = mClassList.get(index);
+                if (mStudentModel.getClassId() == classItem.getId()) {
+                    selectedIndex = index;
+                    break;
+                }
+            }
+        }
+        classSpinner.setSelection(selectedIndex);
+        mSelectedClassIndex = selectedIndex;
+    }
+
+    private void setDefaultGender() {
+        int selectedIndex = 0;
+        if (mStudentModel != null) {
+            for (int index = 0; index < mGenderList.size(); index++) {
+                SimpleModel gender = mGenderList.get(index);
+                if (mStudentModel.getGenderId() == gender.getId()) {
+                    selectedIndex = index;
+                    break;
+                }
+            }
+        }
+        genderSpinner.setSelection(selectedIndex);
+        mSelectedGenderIndex = selectedIndex;
+    }
+
     private void initSubjectList() {
         mViewModel.getAllSubject().observe(getViewLifecycleOwner(), subjectList -> {
+            mSubjectList.clear();
             mSubjectList.addAll(subjectList);
-            mTranscriptList.clear();
+            updateListTranscripts();
+        });
+    }
+
+    private void updateListTranscripts() {
+        mTranscriptList.clear();
+        if (mStudentModel == null) {
             for (SubjectEntity item : mSubjectList) {
                 mTranscriptList.add(new TranscriptModel(item));
             }
-            mTranscriptAdapter.notifyDataSetChanged();
-        });
+        } else {
+            List<TranscriptModel> tempTranscriptList = mStudentModel.getTranscriptList();
+            for (SubjectEntity item : mSubjectList) {
+                boolean isExisted = false;
+                for (TranscriptModel transcript : tempTranscriptList) {
+                    if (transcript.getSubject().equals(item)) {
+                        mTranscriptList.add(transcript);
+                        isExisted = true;
+                        break;
+                    }
+                }
+                if (!isExisted) {
+                    mTranscriptList.add(new TranscriptModel(item));
+                }
+            }
+        }
+        mTranscriptAdapter.notifyDataSetChanged();
     }
 
 
@@ -193,14 +269,18 @@ public class UpdateStudentFragment extends Fragment {
 
     @OnClick(R.id.btn_submit)
     public void onSubmitClicked() {
-        StudentEntity studentModel = new StudentEntity(
+        StudentEntity submitModel = new StudentEntity(
                 firstNameEditText.getText().toString().trim(),
                 lastNameEditText.getText().toString().trim(),
                 mGenderList.get(mSelectedGenderIndex).getId(),
                 mClassList.get(mSelectedClassIndex).getId(),
                 mTranscriptList
         );
-        mViewModel.addStudent(studentModel);
+        if (mStudentModel == null) {
+            mViewModel.addStudent(submitModel);
+        } else {
+            mViewModel.updateStudent(submitModel);
+        }
         onBack();
     }
 
@@ -210,4 +290,21 @@ public class UpdateStudentFragment extends Fragment {
         }
     }
 
+    private void setDefaultData() {
+        setDefaultName();
+        setDefaultGender();
+        setDefaultClass();
+        setDefaultTranscripts();
+    }
+
+    private void setDefaultTranscripts() {
+        updateListTranscripts();
+    }
+
+    private void setDefaultName() {
+        firstNameEditText.setText(mStudentModel.getFirstName());
+        firstNameEditText.setSelection(firstNameEditText.getText().toString().length());
+        lastNameEditText.setText(mStudentModel.getLastName());
+        lastNameEditText.setSelection(lastNameEditText.getText().toString().length());
+    }
 }

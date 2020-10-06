@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.ttc.tungtt.sm.databases.entities.StudentEntity;
 
@@ -20,4 +21,10 @@ public interface StudentDAO {
 
     @Insert
     long add(StudentEntity student);
+
+    @Query("select * from StudentTable where id = :studentId")
+    LiveData<StudentEntity> getById(int studentId);
+
+    @Update
+    void update(StudentEntity student);
 }
