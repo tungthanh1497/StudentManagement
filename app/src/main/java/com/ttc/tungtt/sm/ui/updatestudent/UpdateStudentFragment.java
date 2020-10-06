@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ttc.tungtt.sm.MainActivity;
 import com.ttc.tungtt.sm.R;
 import com.ttc.tungtt.sm.commons.Constants;
 import com.ttc.tungtt.sm.commons.adapters.SimpleSpinnerAdapter;
@@ -200,6 +201,13 @@ public class UpdateStudentFragment extends Fragment {
                 mTranscriptList
         );
         mViewModel.addStudent(studentModel);
+        onBack();
+    }
+
+    private void onBack() {
+        if (getActivity() != null && getActivity() instanceof MainActivity) {
+            ((MainActivity) getActivity()).onBack();
+        }
     }
 
 }
