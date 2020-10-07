@@ -49,8 +49,6 @@ public class UpdateStudentFragment extends Fragment {
         String STUDENT_ID = "student_id";
     }
 
-    private static final String BUNDLE_STUDENT_ID = UpdateStudentFragment.class.getSimpleName();
-
     @Retention(RetentionPolicy.SOURCE)
     public @interface SPINNER_TYPE {
         String GENDER = "gender";
@@ -239,12 +237,11 @@ public class UpdateStudentFragment extends Fragment {
         mGenderAdapter = new SimpleSpinnerAdapter(getActivity(), mGenderList);
         mClassAdapter = new SimpleSpinnerAdapter(getActivity(), mClassList);
 
-        bindAdapter(SPINNER_TYPE.GENDER, mGenderList, mGenderAdapter, genderSpinner);
-        bindAdapter(SPINNER_TYPE.CLASS, mClassList, mClassAdapter, classSpinner);
+        bindAdapter(SPINNER_TYPE.GENDER, mGenderAdapter, genderSpinner);
+        bindAdapter(SPINNER_TYPE.CLASS, mClassAdapter, classSpinner);
     }
 
     private void bindAdapter(String type,
-                             List<SimpleModel> list,
                              SimpleSpinnerAdapter adapter,
                              Spinner spinner) {
         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);

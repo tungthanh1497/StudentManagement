@@ -15,8 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ttc.tungtt.sm.R;
-import com.ttc.tungtt.sm.commons.Constants;
-import com.ttc.tungtt.sm.databases.entities.SubjectEntity;
 import com.ttc.tungtt.sm.models.TranscriptModel;
 
 import java.lang.annotation.Retention;
@@ -31,8 +29,6 @@ import butterknife.ButterKnife;
  * On Sat, 03 Oct 2020 - 09:47
  */
 public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptAdapter.ViewHolder> {
-
-    private static final String TAG = TranscriptAdapter.class.getSimpleName();
 
     @Retention(RetentionPolicy.SOURCE)
     public @interface RESULT_VIEW_TYPE {
@@ -106,15 +102,6 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptAdapter.Vi
                 break;
         }
 
-    }
-
-    private int getTranscriptPositionBySubject(SubjectEntity subjectModel) {
-        for (int index = 0; index < mTranscriptList.size(); index++) {
-            if (subjectModel.equals(mTranscriptList.get(index).getSubject())) {
-                return index;
-            }
-        }
-        return Constants.POSITION_NOT_EXISTED;
     }
 
     @Override

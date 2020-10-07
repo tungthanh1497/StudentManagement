@@ -11,11 +11,6 @@ public class SimpleModel {
     private int id;
     private String name;
 
-    public SimpleModel(int id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
     public SimpleModel(String name) {
         this.name = name;
     }
