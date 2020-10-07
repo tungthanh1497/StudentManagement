@@ -33,5 +33,9 @@ public class MainViewModel extends AndroidViewModel {
     public LiveData<List<ClassEntity>> getAllClasses() {
         return mAppDatabase.classDAO().getAll();
     }
+
+    public void deleteStudent(StudentEntity deletingStudent) {
+        mAppDatabase.studentDAO().delete(deletingStudent);
+    }
     // TODO: Implement the ViewModel
 }

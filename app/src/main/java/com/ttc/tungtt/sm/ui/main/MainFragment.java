@@ -1,5 +1,6 @@
 package com.ttc.tungtt.sm.ui.main;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,14 +69,15 @@ public class MainFragment extends Fragment {
         mStudentList = new ArrayList<>();
         mClassList = new ArrayList<>();
         mGenderList = new ArrayList<>();
-        mStudentAdapter = new StudentAdapter(getContext(), mStudentList, position -> {
+        mStudentAdapter = new StudentAdapter(getContext(), mStudentList, new StudentAdapter.OnStudentListener() {
+            @Override
+            public void onUpdateStudent(int position) {
+                openUpdateStudentScreen(mStudentList.get(position));
+            }
 
-            if (getActivity() != null && getActivity() instanceof MainActivity) {
-                UpdateStudentFragment fragment = UpdateStudentFragment.newInstance();
-                Bundle bundle = new Bundle();
-                bundle.putString(UpdateStudentFragment.BUNDLE_KEY.STUDENT_ID, mStudentList.get(position).getId());
-                fragment.setArguments(bundle);
-                ((MainActivity) getActivity()).addScreen(fragment, Constants.SCREEN_TAG.UPDATE_STUDENT);
+            @Override
+            public void onDeleteStudent(int position) {
+                openDialogConfirm(mStudentList.get(position));
             }
         });
         studentRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
@@ -125,6 +127,34 @@ public class MainFragment extends Fragment {
             }
         }
         mStudentAdapter.notifyDataSetChanged();
+    }
+
+    private void openUpdateStudentScreen(StudentEntity updatingStudent) {
+        if (getActivity() != null && getActivity() instanceof MainActivity) {
+            UpdateStudentFragment fragment = UpdateStudentFragment.newInstance();
+            Bundle bundle = new Bundle();
+            bundle.putString(UpdateStudentFragment.BUNDLE_KEY.STUDENT_ID, updatingStudent.getId());
+            fragment.setArguments(bundle);
+            ((MainActivity) getActivity()).addScreen(fragment, Constants.SCREEN_TAG.UPDATE_STUDENT);
+        }
+    }
+
+    private void openDialogConfirm(StudentEntity deletingStudent) {
+        AlertDialog dialogConfirm = new AlertDialog.Builder(getContext())
+                .setTitle("Dialog Confirm")
+                .setMessage("Do you really want to delete student " + deletingStudent.getFullName() + "?")
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton(R.string.btn_delete, (dialog, whichButton) -> {
+                    mViewModel.deleteStudent(deletingStudent);
+                })
+                .setNegativeButton(R.string.btn_no, null)
+                .create();
+        dialogConfirm.setOnShowListener(arg0 -> {
+            dialogConfirm.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.colorAccent));
+            dialogConfirm.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+        });
+
+        dialogConfirm.show();
     }
 
     @OnClick(R.id.btn_add)

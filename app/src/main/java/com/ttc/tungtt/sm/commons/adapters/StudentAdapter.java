@@ -64,6 +64,12 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.ViewHold
                 mListener.onUpdateStudent(position);
             }
         });
+
+        holder.deleteButton.setOnClickListener(view -> {
+            if (mListener != null) {
+                mListener.onDeleteStudent(position);
+            }
+        });
     }
 
     @Override
@@ -83,6 +89,8 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.ViewHold
         RecyclerView transcriptRecyclerView;
         @BindView(R.id.btn_add)
         Button addButton;
+        @BindView(R.id.btn_delete)
+        Button deleteButton;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -92,5 +100,7 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.ViewHold
 
     public interface OnStudentListener {
         void onUpdateStudent(int position);
+
+        void onDeleteStudent(int position);
     }
 }

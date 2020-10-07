@@ -12,4 +12,5 @@
     <string name="title_list_students">List students:</string>
     <string name="btn_edit">Edit</string>
     <string name="btn_delete">Delete</string>
+    <string name="btn_no">No</string>
 </resources>

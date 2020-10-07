@@ -2,6 +2,7 @@ package com.ttc.tungtt.sm.databases.daos;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
@@ -30,4 +31,7 @@ public interface StudentDAO {
 
     @Query("select * from StudentTable where id like :tempId || '%'")
     LiveData<List<StudentEntity>> getLikeId(String tempId);
+
+    @Delete
+    void delete(StudentEntity deletingStudent);
 }
