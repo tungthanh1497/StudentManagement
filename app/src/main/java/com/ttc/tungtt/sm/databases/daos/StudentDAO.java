@@ -21,7 +21,7 @@ public interface StudentDAO {
     LiveData<List<StudentEntity>> getAll();
 
     @Insert
-    long add(StudentEntity student);
+    void add(StudentEntity student);
 
     @Query("select * from StudentTable where id = :studentId")
     LiveData<StudentEntity> getById(String studentId);

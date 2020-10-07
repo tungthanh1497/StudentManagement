@@ -118,6 +118,7 @@ public class UpdateStudentFragment extends Fragment {
         initRecyclerViews();
         initData();
         if (!StringUtils.isNullOrEmpty(mUpdatingStudentId)) {
+            // case edit student
             mViewModel.getStudentById(mUpdatingStudentId).observe(getViewLifecycleOwner(), studentEntity -> {
                 mStudentModel = studentEntity;
                 setDefaultData();
@@ -168,7 +169,8 @@ public class UpdateStudentFragment extends Fragment {
 
     private void setDefaultClass() {
         int selectedIndex = 0;
-        if (mStudentModel != null) {
+        if (!isCreatingNewStudent()) {
+            // case updating student -> compare class id to display
             for (int index = 0; index < mClassList.size(); index++) {
                 SimpleModel classItem = mClassList.get(index);
                 if (mStudentModel.getClassId() == classItem.getId()) {
@@ -183,7 +185,8 @@ public class UpdateStudentFragment extends Fragment {
 
     private void setDefaultGender() {
         int selectedIndex = 0;
-        if (mStudentModel != null) {
+        if (!isCreatingNewStudent()) {
+            // case updating student -> compare gender id to display
             for (int index = 0; index < mGenderList.size(); index++) {
                 SimpleModel gender = mGenderList.get(index);
                 if (mStudentModel.getGenderId() == gender.getId()) {
@@ -204,9 +207,15 @@ public class UpdateStudentFragment extends Fragment {
         });
     }
 
+    /**
+     * if is case create new student -> init new list transcript from list subject and grant default result 0
+     * else check from list subject:
+     * * if any subject is not existed in transcript, add new one and grant default result 0
+     * * else keep that transcript to display
+     */
     private void updateListTranscripts() {
         mTranscriptList.clear();
-        if (mStudentModel == null) {
+        if (isCreatingNewStudent()) {
             for (SubjectEntity item : mSubjectList) {
                 mTranscriptList.add(new TranscriptModel(item));
             }
@@ -271,7 +280,7 @@ public class UpdateStudentFragment extends Fragment {
     public void onSubmitClicked() {
         String firstName = StringUtils.formatCapitalizeWithoutSpace(firstNameEditText);
         String lastName = StringUtils.formatCapitalize(lastNameEditText);
-        if (mStudentModel == null) {
+        if (isCreatingNewStudent()) {
             String tempId = mViewModel.formatNameToTempStudentId(firstName, lastName);
 
             mViewModel.getListStudentLikeId(tempId).observe(getViewLifecycleOwner(), studentList -> {
@@ -320,10 +329,10 @@ public class UpdateStudentFragment extends Fragment {
     private void setDefaultName() {
         firstNameEditText.setText(mStudentModel.getFirstName());
         firstNameEditText.setSelection(firstNameEditText.getText().toString().length());
-        firstNameEditText.setEnabled(mStudentModel == null);
+        firstNameEditText.setEnabled(isCreatingNewStudent());
         lastNameEditText.setText(mStudentModel.getLastName());
         lastNameEditText.setSelection(lastNameEditText.getText().toString().length());
-        lastNameEditText.setEnabled(mStudentModel == null);
+        lastNameEditText.setEnabled(isCreatingNewStudent());
     }
 
     private void initEditTexts() {
@@ -356,5 +365,14 @@ public class UpdateStudentFragment extends Fragment {
                 || StringUtils.isNullOrEmpty(lastNameEditText)
                 || mSelectedGenderIndex == -1
                 || mSelectedClassIndex == -1;
+    }
+
+    /**
+     * @return which status of current screen
+     * true: is case creating new student
+     * false: is case updating student
+     */
+    private boolean isCreatingNewStudent() {
+        return mStudentModel == null;
     }
 }

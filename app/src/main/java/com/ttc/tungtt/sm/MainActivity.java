@@ -23,11 +23,25 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void addScreen(Fragment fragment, String name) {
+    /**
+     * open a new Fragment and add to backstack
+     *
+     * @param fragment: destination fragment
+     * @param name:     fragment's TAG
+     * @param bundle:   bundle to transfer data (if needed)
+     */
+    public void addScreen(Fragment fragment, String name, Bundle bundle) {
+        if (bundle != null) {
+            fragment.setArguments(bundle);
+        }
         mFragmentManager.beginTransaction()
                 .add(R.id.container, fragment)
                 .addToBackStack(name)
                 .commit();
+    }
+
+    public void addScreen(Fragment fragment, String name) {
+        addScreen(fragment, name, null);
     }
 
     public void onBack() {
