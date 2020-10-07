@@ -103,19 +103,18 @@ public class UpdateStudentViewModel extends AndroidViewModel {
     }
 
     public String getMinimizeAvailableId(String tempId, List<StudentEntity> studentList) {
-        int count = 0;
+        int maxId = -1;
         for (StudentEntity item : studentList) {
             String remainId = item.getId().replace(tempId, "");
             if (remainId.length() == 0) {
-                count++;
+                maxId = Math.max(maxId, 0);
             } else {
                 try {
-                    Integer.parseInt(remainId);
-                    count++;
+                    maxId = Math.max(maxId, Integer.parseInt(remainId));
                 } catch (Exception e) {
                 }
             }
         }
-        return count > 0 ? tempId + count : tempId;
+        return maxId >= 0 ? tempId + (maxId + 1) : tempId;
     }
 }
