@@ -1,6 +1,8 @@
 package com.ttc.tungtt.sm.ui.updatestudent;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +11,6 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -114,6 +115,7 @@ public class UpdateStudentFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(UpdateStudentViewModel.class);
 
+        initEditTexts();
         initSpinners();
         initRecyclerViews();
         initData();
@@ -258,7 +260,7 @@ public class UpdateStudentFragment extends Fragment {
                         mSelectedClassIndex = position;
                         break;
                 }
-                Toast.makeText(getActivity(), "onItemSelected: " + list.get(position), Toast.LENGTH_SHORT).show();
+                validateSubmitButton();
             }
 
             @Override
@@ -321,7 +323,41 @@ public class UpdateStudentFragment extends Fragment {
     private void setDefaultName() {
         firstNameEditText.setText(mStudentModel.getFirstName());
         firstNameEditText.setSelection(firstNameEditText.getText().toString().length());
+        firstNameEditText.setEnabled(mStudentModel == null);
         lastNameEditText.setText(mStudentModel.getLastName());
         lastNameEditText.setSelection(lastNameEditText.getText().toString().length());
+        lastNameEditText.setEnabled(mStudentModel == null);
+    }
+
+    private void initEditTexts() {
+        TextWatcher validateTextWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                validateSubmitButton();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        };
+        firstNameEditText.addTextChangedListener(validateTextWatcher);
+        lastNameEditText.addTextChangedListener(validateTextWatcher);
+    }
+
+    private void validateSubmitButton() {
+        submitButton.setEnabled(!invalidField());
+    }
+
+    private boolean invalidField() {
+        return StringUtils.isNullOrEmpty(firstNameEditText)
+                || StringUtils.isNullOrEmpty(lastNameEditText)
+                || mSelectedGenderIndex == -1
+                || mSelectedClassIndex == -1;
     }
 }

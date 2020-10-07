@@ -42,12 +42,6 @@ public class StringUtils {
     }
 
     public static boolean isNullOrEmpty(Object object) {
-        if (object == null) {
-            return true;
-        } else if (object instanceof String) {
-            return ((String) object).trim().length() == 0;
-        } else {
-            return false;
-        }
+        return getString(object).trim().isEmpty();
     }
 }
