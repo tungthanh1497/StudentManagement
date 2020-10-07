@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fff"
+    android:background="@color/colorPrimaryDark"
     android:orientation="vertical"
     tools:context=".ui.updatestudent.UpdateStudentFragment">
 
@@ -32,7 +32,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/label_first_name" />
+                        android:text="@string/label_first_name"
+                        android:textColor="@color/colorText" />
 
                     <EditText
                         android:id="@+id/et_first_name"
@@ -41,7 +42,9 @@
                         android:layout_weight="2"
                         android:hint="@string/hint_first_name"
                         android:importantForAutofill="no"
-                        android:inputType="textPersonName" />
+                        android:inputType="textPersonName"
+                        android:textColor="@color/colorText"
+                        android:textColorHint="@color/colorTextHint" />
                 </TableRow>
 
                 <TableRow
@@ -55,7 +58,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/label_last_name" />
+                        android:text="@string/label_last_name"
+                        android:textColor="@color/colorText" />
 
                     <EditText
                         android:id="@+id/et_last_name"
@@ -64,7 +68,9 @@
                         android:layout_weight="2"
                         android:hint="@string/hint_last_name"
                         android:importantForAutofill="no"
-                        android:inputType="textPersonName" />
+                        android:inputType="textPersonName"
+                        android:textColor="@color/colorText"
+                        android:textColorHint="@color/colorTextHint" />
                 </TableRow>
 
                 <TableRow
@@ -78,13 +84,16 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/label_gender" />
+                        android:text="@string/label_gender"
+                        android:textColor="@color/colorText" />
 
                     <Spinner
                         android:id="@+id/spn_gender"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="2" />
+                        android:layout_weight="2"
+                        android:backgroundTint="@color/colorText"
+                        android:popupBackground="@color/colorPrimary" />
                 </TableRow>
 
                 <TableRow
@@ -98,13 +107,16 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/label_class" />
+                        android:text="@string/label_class"
+                        android:textColor="@color/colorText" />
 
                     <Spinner
                         android:id="@+id/spn_class"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="2" />
+                        android:layout_weight="2"
+                        android:backgroundTint="@color/colorText"
+                        android:popupBackground="@color/colorPrimary" />
                 </TableRow>
             </TableLayout>
 
@@ -122,5 +134,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:text="@string/btn_submit" />
+        android:background="@color/colorText"
+        android:text="@string/btn_submit"
+        android:textAllCaps="false"
+        android:textColor="@color/colorPrimaryDark" />
 </LinearLayout>

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
-    android:background="#f0f8ff"
+    android:background="@color/colorPrimary"
     android:orientation="vertical"
     android:padding="4dp">
 
@@ -18,7 +18,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:textColor="#0e2f44"
+            android:textColor="@color/colorText"
+            android:textSize="16sp"
             android:textStyle="bold"
             tools:text="Tung Trinh Thanh" />
 
@@ -27,7 +28,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="#0e2f44"
+            android:textColor="@color/colorText"
+            android:textSize="16sp"
             android:textStyle="bold"
             tools:text="Male" />
 
@@ -36,7 +38,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="#0e2f44"
+            android:textColor="@color/colorText"
+            android:textSize="16sp"
             android:textStyle="bold"
             tools:text="11a12" />
 
@@ -60,6 +63,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/btn_edit" />
+            android:background="@color/colorText"
+            android:text="@string/btn_edit"
+            android:textAllCaps="false"
+            android:textColor="@color/colorPrimaryDark" />
     </LinearLayout>
 </LinearLayout>
