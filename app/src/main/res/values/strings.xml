@@ -8,7 +8,8 @@
     <string name="label_gender">Gender *</string>
     <string name="label_class">Class *</string>
     <string name="btn_submit">Submit</string>
-    <string name="btn_add">Add</string>
+    <string name="btn_add">Create new Student</string>
     <string name="title_list_students">List students:</string>
     <string name="btn_edit">Edit</string>
+    <string name="btn_delete">Delete</string>
 </resources>
