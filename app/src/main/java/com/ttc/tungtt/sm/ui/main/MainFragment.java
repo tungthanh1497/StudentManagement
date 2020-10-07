@@ -108,7 +108,7 @@ public class MainFragment extends Fragment {
     private void updateClassNames() {
         for (StudentEntity student : mStudentList) {
             for (ClassEntity classItem : mClassList) {
-                if (student.getGenderId() == classItem.getId()) {
+                if (student.getClassId() == classItem.getId()) {
                     student.setClassName(classItem.getName());
                 }
             }
