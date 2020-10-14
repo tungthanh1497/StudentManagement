@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,7 +35,9 @@ import com.ttc.tungtt.sm.models.TranscriptModel;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -86,6 +89,8 @@ public class UpdateStudentFragment extends Fragment {
     private int mSelectedGenderIndex = -1;
     private int mSelectedClassIndex = -1;
 
+    private Map<Integer, Boolean> mMapValidationResult;
+
 
     public static UpdateStudentFragment newInstance() {
         return new UpdateStudentFragment();
@@ -130,10 +135,21 @@ public class UpdateStudentFragment extends Fragment {
     private void initRecyclerViews() {
         mSubjectList = new ArrayList<>();
         mTranscriptList = new ArrayList<>();
+        mMapValidationResult = new HashMap<>();
         mTranscriptAdapter = new TranscriptAdapter(getContext(),
                 mTranscriptList,
                 TranscriptAdapter.RESULT_VIEW_TYPE.EDIT_TEXT,
-                (position, result) -> mTranscriptList.get(position).setResult(result));
+                (position, strResult) -> {
+                    try {
+                        double result = Double.parseDouble(strResult);
+                        mTranscriptList.get(position).setResult(result);
+                        mMapValidationResult.put(position, true);
+                    } catch (Exception e) {
+                        Toast.makeText(getContext(), "Number format required.", Toast.LENGTH_SHORT).show();
+                        mMapValidationResult.put(position, false);
+                    }
+                    validateSubmitButton();
+                });
         transcriptRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         transcriptRecyclerView.setItemAnimator(new DefaultItemAnimator());
         transcriptRecyclerView.setAdapter(mTranscriptAdapter);
@@ -361,6 +377,13 @@ public class UpdateStudentFragment extends Fragment {
     }
 
     private boolean invalidField() {
+        for (Map.Entry item : mMapValidationResult.entrySet()) {
+            if (item != null
+                    && item.getValue() != null
+                    && !((Boolean) item.getValue())) {
+                return true;
+            }
+        }
         return StringUtils.isNullOrEmpty(firstNameEditText)
                 || StringUtils.isNullOrEmpty(lastNameEditText)
                 || mSelectedGenderIndex == -1

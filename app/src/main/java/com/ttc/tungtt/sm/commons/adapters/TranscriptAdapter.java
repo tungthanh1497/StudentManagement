@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -81,16 +80,9 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptAdapter.Vi
 
                     @Override
                     public void afterTextChanged(Editable editable) {
-                        try {
-                            double result = Double.parseDouble(editable.toString());
                             if (mListener != null) {
-                                mListener.onChangeResult(position, result);
+                                mListener.onChangeResult(position, editable.toString());
                             }
-                        } catch (Exception e) {
-                            Toast.makeText(mContext, "Number format required.", Toast.LENGTH_SHORT).show();
-                            holder.resultEditText.setText("0");
-                            holder.resultEditText.setSelection(1);
-                        }
                     }
                 });
                 holder.resultEditText.setText(String.valueOf(item.getResult()));
@@ -125,6 +117,6 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptAdapter.Vi
     }
 
     public interface OnTranscriptListener {
-        void onChangeResult(int position, double result);
+        void onChangeResult(int position, String result);
     }
 }
